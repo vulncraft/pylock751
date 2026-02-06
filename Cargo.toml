@@ -1,6 +1,6 @@
 [package]
 name = "pylock751"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 license = "MIT"
 description = "Library for reading and modifying PEP751 pylock.toml files."
