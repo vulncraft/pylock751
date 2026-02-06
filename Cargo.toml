@@ -5,6 +5,7 @@ edition = "2024"
 license = "MIT"
 description = "Library for reading and modifying PEP751 pylock.toml files."
 repository = "https://github.com/vulncraft/pylock751"
+exclude = [".github/*"]
 
 [dependencies]
 serde = { version = "1.0.228", features = ["derive"] }
