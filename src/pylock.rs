@@ -1,10 +1,16 @@
-use std::str::FromStr;
+use std::{
+    io::Read,
+    str::FromStr,
+};
 
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum PylockErrors {
+    #[error("Error parsing pylock.toml")]
     DeserializationError,
+    #[error("IO error reading file")]
+    IOError(#[source] std::io::Error),
 }
 
 #[derive(Deserialize, Serialize, PartialEq, PartialOrd, Debug)]
@@ -26,6 +32,25 @@ pub struct Pylock {
     #[serde(alias = "requires-python")]
     pub requires_python: Option<String>,
     pub packages: Vec<PyPackage>,
+}
+
+impl Pylock {
+    /// Read a pylock.toml file into a Pylock
+    /// # Examples
+    ///
+    /// ```
+    /// use pylock751::pylock::Pylock;
+    /// let mut file = std::fs::File::open("tests/corpus/pylock.toml").unwrap();
+    /// let lock_file = Pylock::read_from_file(&mut file);
+    ///
+    /// ```
+    pub fn read_from_file(file: &mut std::fs::File) -> Result<Self, PylockErrors> {
+        let mut contents = String::new();
+        file.read_to_string(&mut contents)
+            .map_err(PylockErrors::IOError)?;
+
+        Pylock::from_str(&contents)
+    }
 }
 
 impl FromStr for Pylock {
