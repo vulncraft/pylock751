@@ -1,7 +1,4 @@
-use std::{
-    io::Read,
-    str::FromStr,
-};
+use std::{io::Read, str::FromStr};
 
 use serde::{Deserialize, Serialize};
 
@@ -21,8 +18,8 @@ pub enum PylockVersion {
 
 #[derive(Deserialize, Serialize)]
 pub struct PyPackage {
-    name: String,
-    version: Option<String>,
+    pub name: String,
+    pub version: Option<String>,
 }
 
 #[derive(Deserialize, Serialize)]
